@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>My Fitness Dashboard</title>
 
   <style>
@@ -14,11 +13,31 @@
       font-family: Arial, sans-serif;
     }
 
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #777;
+      --line: #e9ecef;
+      --accent: #222;
+      --soft: #eef6ff;
+      --success: #eaf8ef;
+      --danger: #fff0f0;
+    }
+
     body {
       min-height: 100vh;
-      background: #f4f6f8;
-      color: #222;
+      background: var(--bg);
+      color: var(--text);
       padding: 30px;
+    }
+
+    button, select, input, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .container {
@@ -27,7 +46,7 @@
     }
 
     header {
-      margin-bottom: 30px;
+      margin-bottom: 24px;
     }
 
     header h1 {
@@ -36,7 +55,36 @@
     }
 
     header p {
-      color: #777;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0 26px;
+    }
+
+    .tab-btn {
+      border: 1px solid #dcdfe3;
+      background: white;
+      padding: 11px 17px;
+      border-radius: 999px;
+      font-weight: bold;
+    }
+
+    .tab-btn.active {
+      background: #222;
+      color: white;
+      border-color: #222;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
     }
 
     .top-grid {
@@ -47,14 +95,14 @@
     }
 
     .card {
-      background: white;
+      background: var(--card);
       border-radius: 18px;
       padding: 25px;
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
     }
 
     .card-title {
-      color: #777;
+      color: var(--muted);
       font-size: 14px;
       margin-bottom: 12px;
     }
@@ -85,6 +133,19 @@
       font-size: 22px;
     }
 
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 35px 0 15px;
+    }
+
+    .section-head .section-title {
+      margin: 0;
+    }
+
     .prayer-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -109,6 +170,12 @@
       font-weight: bold;
     }
 
+    .prayer-note {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .schedule {
       background: white;
       border-radius: 18px;
@@ -128,7 +195,7 @@
     }
 
     .schedule-row.today {
-      background: #eef6ff;
+      background: var(--soft);
       font-weight: bold;
     }
 
@@ -138,6 +205,7 @@
 
     .exercise {
       color: #555;
+      line-height: 1.65;
     }
 
     .today .exercise {
@@ -154,14 +222,149 @@
       margin-left: 8px;
     }
 
-    .prayer-note {
-      margin-top: 15px;
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .program-card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .program-card.active {
+      border-color: #222;
+    }
+
+    .program-card h3 {
+      font-size: 20px;
+    }
+
+    .program-meta {
       color: #777;
       font-size: 13px;
     }
 
-    @media (max-width: 850px) {
-      .top-grid {
+    .program-desc {
+      color: #555;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .program-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: bold;
+      background: #222;
+      color: white;
+    }
+
+    .btn.secondary {
+      background: #eef1f4;
+      color: #222;
+    }
+
+    .btn.danger {
+      background: #b42318;
+    }
+
+    .selected-program-box {
+      margin-bottom: 18px;
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .selected-program-box strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .custom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #dfe3e8;
+      border-radius: 12px;
+      padding: 12px;
+      background: white;
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .saved-note {
+      margin-top: 12px;
+      color: #48745c;
+      font-size: 13px;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: white;
+      padding: 14px 18px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.05);
+      font-size: 14px;
+    }
+
+    .status-bar span {
+      color: #666;
+    }
+
+    .mini-pill {
+      display: inline-block;
+      padding: 6px 10px;
+      background: #eef1f4;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    @media (max-width: 900px) {
+      .top-grid,
+      .program-grid,
+      .custom-grid {
         grid-template-columns: 1fr;
       }
 
@@ -187,7 +390,6 @@
 </head>
 
 <body>
-
   <div class="container">
 
     <header>
@@ -195,489 +397,677 @@
       <p>Bahrain • Workout • Prayer • Daily Tracker</p>
     </header>
 
-
-    <!-- TOP CARDS -->
-
-    <div class="top-grid">
-
-      <div class="card">
-        <div class="card-title">CURRENT TIME</div>
-
-        <div class="time" id="time">
-          --:--:--
-        </div>
+    <div class="status-bar">
+      <div>
+        Active plan:
+        <strong id="activePlanLabel">My Current Schedule</strong>
       </div>
-
-
-      <div class="card">
-        <div class="card-title">TODAY</div>
-
-        <div class="date" id="date">
-          Loading...
-        </div>
-      </div>
-
-
-      <div class="card">
-
-        <div class="card-title">
-          TODAY'S WORKOUT
-        </div>
-
-        <div class="workout-name" id="todayWorkout">
-          Loading...
-        </div>
-
-        <div class="workout-details" id="workoutDetails"></div>
-
-      </div>
-
+      <span>
+        Saved automatically on this browser/device
+        <span class="mini-pill" id="deviceIdLabel"></span>
+      </span>
     </div>
 
-
-    <!-- PRAYER TIMES -->
-
-    <h2 class="section-title">
-      🕌 Prayer Times
-    </h2>
-
-    <div class="prayer-grid">
-
-      <div class="prayer">
-        <h3>Fajr</h3>
-        <div class="prayer-time" id="fajr">--:--</div>
-      </div>
-
-
-      <div class="prayer">
-        <h3>Sunrise</h3>
-        <div class="prayer-time" id="sunrise">--:--</div>
-      </div>
-
-
-      <div class="prayer">
-        <h3>Dhuhr</h3>
-        <div class="prayer-time" id="dhuhr">--:--</div>
-      </div>
-
-
-      <div class="prayer">
-        <h3>Maghrib</h3>
-        <div class="prayer-time" id="maghrib">--:--</div>
-      </div>
-
-
-      <div class="prayer">
-        <h3>Isha</h3>
-        <div class="prayer-time" id="isha">--:--</div>
-      </div>
-
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="programs">Workout Programs</button>
+      <button class="tab-btn" data-tab="custom">Custom Schedule</button>
     </div>
 
-    <p class="prayer-note">
-      Prayer times: Manama, Bahrain • Shia Ithna-Ashari / Jafari calculation.
-    </p>
+    <!-- DASHBOARD TAB -->
+    <section class="tab-panel active" id="dashboard">
 
+      <div class="top-grid">
+        <div class="card">
+          <div class="card-title">CURRENT TIME</div>
+          <div class="time" id="time">--:--:--</div>
+        </div>
 
-    <!-- WORKOUT SCHEDULE -->
+        <div class="card">
+          <div class="card-title">TODAY</div>
+          <div class="date" id="date">Loading...</div>
+        </div>
 
-    <h2 class="section-title">
-      🏋️ Weekly Workout Schedule
-    </h2>
-
-
-    <div class="schedule" id="schedule">
-
-      <div class="schedule-row" data-day="Saturday">
-        <div class="day">Saturday</div>
-
-        <div class="exercise">
-          Chest: 3 exercises × 3 sets
-          <br>
-          Triceps: 2 exercises × 3 sets
+        <div class="card">
+          <div class="card-title">TODAY'S WORKOUT</div>
+          <div class="workout-name" id="todayWorkout">Loading...</div>
+          <div class="workout-details" id="workoutDetails"></div>
         </div>
       </div>
 
+      <h2 class="section-title">🕌 Prayer Times</h2>
 
-      <div class="schedule-row" data-day="Sunday">
-        <div class="day">Sunday</div>
+      <div class="prayer-grid">
+        <div class="prayer">
+          <h3>Fajr</h3>
+          <div class="prayer-time" id="fajr">--:--</div>
+        </div>
 
-        <div class="exercise">
-          Back: 3 exercises × 3 sets
-          <br>
-          Biceps: 2 exercises × 3 sets
+        <div class="prayer">
+          <h3>Sunrise</h3>
+          <div class="prayer-time" id="sunrise">--:--</div>
+        </div>
+
+        <div class="prayer">
+          <h3>Dhuhr</h3>
+          <div class="prayer-time" id="dhuhr">--:--</div>
+        </div>
+
+        <div class="prayer">
+          <h3>Maghrib</h3>
+          <div class="prayer-time" id="maghrib">--:--</div>
+        </div>
+
+        <div class="prayer">
+          <h3>Isha</h3>
+          <div class="prayer-time" id="isha">--:--</div>
         </div>
       </div>
 
+      <p class="prayer-note">
+        Prayer times: Manama, Bahrain • Shia Ithna-Ashari / Jafari calculation.
+      </p>
 
-      <div class="schedule-row" data-day="Monday">
-        <div class="day">Monday</div>
+      <div class="section-head">
+        <h2 class="section-title">🏋️ Weekly Workout Schedule</h2>
+        <button class="btn secondary" id="changePlanBtn">Change Program</button>
+      </div>
 
-        <div class="exercise">
-          Legs: 4 exercises × 3 sets
-          <br>
-          Calves: 1 exercise × 3 sets
-          <br>
-          Abs: 2 exercises
+      <div class="schedule" id="schedule"></div>
+    </section>
+
+    <!-- PROGRAMS TAB -->
+    <section class="tab-panel" id="programs">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Workout Programs</h2>
+          <p style="color:#777;margin-top:6px;">
+            Choose a preset. Your original schedule is included and is never removed.
+          </p>
         </div>
       </div>
 
+      <div class="selected-program-box">
+        <strong>Current selection</strong>
+        <span id="selectedProgramText">My Current Schedule</span>
+      </div>
 
-      <div class="schedule-row" data-day="Tuesday">
-        <div class="day">Tuesday</div>
+      <div class="program-grid" id="programGrid"></div>
+    </section>
 
-        <div class="exercise">
-          Cardio / Rest
-          <br>
-          30–45 min walking
+    <!-- CUSTOM TAB -->
+    <section class="tab-panel" id="custom">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Custom Weekly Schedule</h2>
+          <p style="color:#777;margin-top:6px;">
+            Write your own workout for each day and save it as your active plan.
+          </p>
         </div>
       </div>
 
+      <div class="card">
+        <div class="field">
+          <label for="customPlanName">Schedule name</label>
+          <input id="customPlanName" type="text" placeholder="Example: My Cutting Plan">
+        </div>
 
-      <div class="schedule-row" data-day="Wednesday">
-        <div class="day">Wednesday</div>
+        <div class="custom-grid" id="customFields"></div>
 
-        <div class="exercise">
-          Chest: 2 exercises × 3 sets
-          <br>
-          Back: 2 exercises × 3 sets
-          <br>
-          Shoulders: 2 exercises × 3 sets
+        <div class="program-actions">
+          <button class="btn" id="saveCustomBtn">Save & Use Custom Schedule</button>
+          <button class="btn secondary" id="loadActiveIntoCustomBtn">Copy Active Plan Here</button>
+          <button class="btn danger" id="resetCustomBtn">Reset Custom</button>
+        </div>
+
+        <div class="saved-note" id="customSavedNote">
+          Changes are stored on this browser/device after you press Save.
         </div>
       </div>
-
-
-      <div class="schedule-row" data-day="Thursday">
-        <div class="day">Thursday</div>
-
-        <div class="exercise">
-          Shoulders: 2 exercises × 3 sets
-          <br>
-          Biceps: 2 exercises × 3 sets
-          <br>
-          Triceps: 2 exercises × 3 sets
-          <br>
-          Abs
-        </div>
-      </div>
-
-
-      <div class="schedule-row" data-day="Friday">
-        <div class="day">Friday</div>
-
-        <div class="exercise">
-          Full Rest
-        </div>
-      </div>
-
-    </div>
+    </section>
 
   </div>
 
+  <script>
+    // =========================
+    // PROGRAM DATA
+    // =========================
 
+    const days = [
+      "Saturday",
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ];
 
-<script>
+    // Your original schedule is preserved exactly as the default preset.
+    const programs = {
+      original: {
+        name: "My Current Schedule",
+        meta: "Your original 6-training-day routine",
+        description: "Your existing schedule, preserved exactly.",
+        schedule: {
+          Saturday: {
+            title: "Chest + Triceps",
+            details: "Chest: 3 exercises × 3 sets<br>Triceps: 2 exercises × 3 sets"
+          },
+          Sunday: {
+            title: "Back + Biceps",
+            details: "Back: 3 exercises × 3 sets<br>Biceps: 2 exercises × 3 sets"
+          },
+          Monday: {
+            title: "Legs + Calves + Abs",
+            details: "Legs: 4 exercises × 3 sets<br>Calves: 1 exercise × 3 sets<br>Abs: 2 exercises"
+          },
+          Tuesday: {
+            title: "Cardio / Recovery",
+            details: "Walking: 30–45 minutes<br>Light recovery day"
+          },
+          Wednesday: {
+            title: "Chest + Back + Shoulders",
+            details: "Chest: 2 exercises × 3 sets<br>Back: 2 exercises × 3 sets<br>Shoulders: 2 exercises × 3 sets"
+          },
+          Thursday: {
+            title: "Shoulders + Arms + Abs",
+            details: "Shoulders: 2 exercises × 3 sets<br>Biceps: 2 exercises × 3 sets<br>Triceps: 2 exercises × 3 sets<br>Abs"
+          },
+          Friday: {
+            title: "Rest Day 😴",
+            details: "Full recovery<br>Optional light walking"
+          }
+        }
+      },
 
-  // =========================
-  // WORKOUT SCHEDULE
-  // =========================
+      ppl: {
+        name: "Push Pull Legs (PPL)",
+        meta: "6 days • High frequency",
+        description: "Push, pull and legs repeated twice each week.",
+        schedule: {
+          Saturday: { title: "Push", details: "Chest • Shoulders • Triceps" },
+          Sunday: { title: "Pull", details: "Back • Rear delts • Biceps" },
+          Monday: { title: "Legs", details: "Quads • Hamstrings • Glutes • Calves" },
+          Tuesday: { title: "Push", details: "Chest • Shoulders • Triceps" },
+          Wednesday: { title: "Pull", details: "Back • Rear delts • Biceps" },
+          Thursday: { title: "Legs", details: "Quads • Hamstrings • Glutes • Calves" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      },
 
-  const workouts = {
+      arnold: {
+        name: "Arnold Split",
+        meta: "6 days • Classic bodybuilding",
+        description: "Chest/back, shoulders/arms and legs, repeated twice.",
+        schedule: {
+          Saturday: { title: "Chest + Back", details: "Chest compounds & isolation<br>Back rows & pulldowns" },
+          Sunday: { title: "Shoulders + Arms", details: "Shoulders • Biceps • Triceps" },
+          Monday: { title: "Legs", details: "Quads • Hamstrings • Glutes • Calves" },
+          Tuesday: { title: "Chest + Back", details: "Chest compounds & isolation<br>Back rows & pulldowns" },
+          Wednesday: { title: "Shoulders + Arms", details: "Shoulders • Biceps • Triceps" },
+          Thursday: { title: "Legs", details: "Quads • Hamstrings • Glutes • Calves" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      },
 
-    Saturday: {
-      title: "Chest + Triceps",
-      details: `
-        Chest: 3 exercises × 3 sets<br>
-        Triceps: 2 exercises × 3 sets
-      `
-    },
+      upperLower: {
+        name: "Upper / Lower",
+        meta: "4 days • Balanced",
+        description: "Two upper-body and two lower-body sessions each week.",
+        schedule: {
+          Saturday: { title: "Upper Body", details: "Chest • Back • Shoulders • Arms" },
+          Sunday: { title: "Lower Body", details: "Quads • Hamstrings • Glutes • Calves" },
+          Monday: { title: "Rest / Recovery", details: "Walking or mobility" },
+          Tuesday: { title: "Upper Body", details: "Chest • Back • Shoulders • Arms" },
+          Wednesday: { title: "Lower Body", details: "Quads • Hamstrings • Glutes • Calves" },
+          Thursday: { title: "Rest / Cardio", details: "Optional light cardio" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      },
 
-    Sunday: {
-      title: "Back + Biceps",
-      details: `
-        Back: 3 exercises × 3 sets<br>
-        Biceps: 2 exercises × 3 sets
-      `
-    },
+      broSplit: {
+        name: "Bro Split",
+        meta: "5 days • One main muscle group/day",
+        description: "Traditional bodybuilding split focused on one major area per session.",
+        schedule: {
+          Saturday: { title: "Chest", details: "Chest-focused workout" },
+          Sunday: { title: "Back", details: "Back-focused workout" },
+          Monday: { title: "Legs", details: "Quads • Hamstrings • Glutes • Calves" },
+          Tuesday: { title: "Shoulders", details: "Front • Side • Rear delts" },
+          Wednesday: { title: "Arms", details: "Biceps • Triceps • Forearms" },
+          Thursday: { title: "Rest / Abs", details: "Optional abs and light cardio" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      },
 
-    Monday: {
-      title: "Legs + Calves + Abs",
-      details: `
-        Legs: 4 exercises × 3 sets<br>
-        Calves: 1 exercise × 3 sets<br>
-        Abs: 2 exercises
-      `
-    },
+      fullBody3: {
+        name: "Full Body 3-Day",
+        meta: "3 days • Beginner-friendly",
+        description: "Three full-body sessions with recovery days between them.",
+        schedule: {
+          Saturday: { title: "Full Body A", details: "Squat • Press • Row • Arms • Core" },
+          Sunday: { title: "Rest / Walking", details: "Light recovery" },
+          Monday: { title: "Full Body B", details: "Hinge • Incline press • Pulldown • Shoulders • Core" },
+          Tuesday: { title: "Rest / Walking", details: "Light recovery" },
+          Wednesday: { title: "Full Body C", details: "Leg press • Chest press • Row • Arms • Core" },
+          Thursday: { title: "Rest / Mobility", details: "Mobility or easy cardio" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      },
 
-    Tuesday: {
-      title: "Cardio / Recovery",
-      details: `
-        Walking: 30–45 minutes<br>
-        Light recovery day
-      `
-    },
+      phul: {
+        name: "PHUL Style",
+        meta: "4 days • Power + hypertrophy",
+        description: "Upper/lower sessions mixing strength-focused and hypertrophy-focused days.",
+        schedule: {
+          Saturday: { title: "Upper Power", details: "Heavy chest • Back • Shoulders • Arms" },
+          Sunday: { title: "Lower Power", details: "Heavy quads • Hamstrings • Calves" },
+          Monday: { title: "Rest", details: "Recovery" },
+          Tuesday: { title: "Upper Hypertrophy", details: "Moderate/high-rep chest • Back • Shoulders • Arms" },
+          Wednesday: { title: "Lower Hypertrophy", details: "Moderate/high-rep legs • Calves" },
+          Thursday: { title: "Rest / Cardio", details: "Optional light cardio" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      },
 
-    Wednesday: {
-      title: "Chest + Back + Shoulders",
-      details: `
-        Chest: 2 exercises × 3 sets<br>
-        Back: 2 exercises × 3 sets<br>
-        Shoulders: 2 exercises × 3 sets
-      `
-    },
+      pplul: {
+        name: "PPL + Upper/Lower",
+        meta: "5 days • Hybrid",
+        description: "Push, pull, legs followed by upper and lower sessions.",
+        schedule: {
+          Saturday: { title: "Push", details: "Chest • Shoulders • Triceps" },
+          Sunday: { title: "Pull", details: "Back • Rear delts • Biceps" },
+          Monday: { title: "Legs", details: "Quads • Hamstrings • Glutes • Calves" },
+          Tuesday: { title: "Rest / Recovery", details: "Walking or mobility" },
+          Wednesday: { title: "Upper Body", details: "Chest • Back • Shoulders • Arms" },
+          Thursday: { title: "Lower Body", details: "Quads • Hamstrings • Glutes • Calves" },
+          Friday: { title: "Rest Day 😴", details: "Full recovery" }
+        }
+      }
+    };
 
-    Thursday: {
-      title: "Shoulders + Arms + Abs",
-      details: `
-        Shoulders: 2 exercises × 3 sets<br>
-        Biceps: 2 exercises × 3 sets<br>
-        Triceps: 2 exercises × 3 sets<br>
-        Abs
-      `
-    },
+    const STORAGE_KEYS = {
+      activeProgram: "fitness.activeProgram",
+      customProgram: "fitness.customProgram",
+      deviceId: "fitness.deviceId",
+      activeTab: "fitness.activeTab"
+    };
 
-    Friday: {
-      title: "Rest Day 😴",
-      details: `
-        Full recovery<br>
-        Optional light walking
-      `
+    let activeProgramKey = localStorage.getItem(STORAGE_KEYS.activeProgram) || "original";
+
+    if (activeProgramKey !== "custom" && !programs[activeProgramKey]) {
+      activeProgramKey = "original";
     }
 
-  };
+    function getDeviceId() {
+      let id = localStorage.getItem(STORAGE_KEYS.deviceId);
+      if (!id) {
+        id = "device-" + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem(STORAGE_KEYS.deviceId, id);
+      }
+      return id;
+    }
 
+    function getCustomProgram() {
+      const saved = localStorage.getItem(STORAGE_KEYS.customProgram);
+      if (!saved) return null;
 
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
 
-  // =========================
-  // BAHRAIN CLOCK
-  // =========================
+    function getActiveProgram() {
+      if (activeProgramKey === "custom") {
+        const custom = getCustomProgram();
+        if (custom) return custom;
+        activeProgramKey = "original";
+      }
 
-  function updateTime() {
+      return programs[activeProgramKey] || programs.original;
+    }
 
-    const now = new Date();
+    // =========================
+    // TABS
+    // =========================
 
+    function openTab(tabId) {
+      document.querySelectorAll(".tab-panel").forEach(panel => {
+        panel.classList.toggle("active", panel.id === tabId);
+      });
 
-    const time = new Intl.DateTimeFormat(
-      "en-US",
-      {
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabId);
+      });
+
+      localStorage.setItem(STORAGE_KEYS.activeTab, tabId);
+    }
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => openTab(btn.dataset.tab));
+    });
+
+    document.querySelector("#changePlanBtn").addEventListener("click", () => {
+      openTab("programs");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // =========================
+    // RENDER PROGRAM CARDS
+    // =========================
+
+    function renderProgramCards() {
+      const grid = document.querySelector("#programGrid");
+      grid.innerHTML = "";
+
+      Object.entries(programs).forEach(([key, program]) => {
+        const card = document.createElement("div");
+        card.className = "program-card" + (activeProgramKey === key ? " active" : "");
+
+        card.innerHTML = `
+          <h3>${program.name}</h3>
+          <div class="program-meta">${program.meta}</div>
+          <div class="program-desc">${program.description}</div>
+          <div class="program-actions">
+            <button class="btn use-program-btn" data-key="${key}">Use This Program</button>
+            <button class="btn secondary preview-program-btn" data-key="${key}">Preview</button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      document.querySelectorAll(".use-program-btn").forEach(btn => {
+        btn.addEventListener("click", () => selectProgram(btn.dataset.key));
+      });
+
+      document.querySelectorAll(".preview-program-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.key;
+          const program = programs[key];
+          renderSchedule(program.schedule, getBahrainDay());
+          openTab("dashboard");
+          document.querySelector("#activePlanLabel").textContent =
+            program.name + " (preview only)";
+        });
+      });
+    }
+
+    function selectProgram(key) {
+      activeProgramKey = key;
+      localStorage.setItem(STORAGE_KEYS.activeProgram, key);
+      renderAll();
+      openTab("dashboard");
+    }
+
+    // =========================
+    // CUSTOM SCHEDULE
+    // =========================
+
+    function renderCustomFields() {
+      const wrapper = document.querySelector("#customFields");
+      wrapper.innerHTML = "";
+
+      days.forEach(day => {
+        const field = document.createElement("div");
+        field.className = "field";
+        field.innerHTML = `
+          <label for="custom-${day}">${day}</label>
+          <textarea id="custom-${day}" placeholder="Example: Chest + Triceps&#10;Chest: 3 exercises × 3 sets"></textarea>
+        `;
+        wrapper.appendChild(field);
+      });
+
+      const custom = getCustomProgram();
+      if (custom) {
+        document.querySelector("#customPlanName").value = custom.name || "My Custom Schedule";
+        days.forEach(day => {
+          const item = custom.schedule?.[day];
+          document.querySelector("#custom-" + day).value =
+            item ? [item.title, stripHtml(item.details)].filter(Boolean).join("\n") : "";
+        });
+      }
+    }
+
+    function stripHtml(value = "") {
+      const temp = document.createElement("div");
+      temp.innerHTML = value;
+      return temp.innerText;
+    }
+
+    function buildCustomProgramFromForm() {
+      const name = document.querySelector("#customPlanName").value.trim() || "My Custom Schedule";
+      const schedule = {};
+
+      days.forEach(day => {
+        const value = document.querySelector("#custom-" + day).value.trim();
+
+        if (!value) {
+          schedule[day] = {
+            title: "Rest Day",
+            details: "No workout added"
+          };
+          return;
+        }
+
+        const lines = value.split("\n").map(line => line.trim()).filter(Boolean);
+        schedule[day] = {
+          title: lines[0] || "Workout",
+          details: (lines.slice(1).join("<br>") || lines[0])
+        };
+      });
+
+      return {
+        name,
+        meta: "Custom schedule",
+        description: "Your personally created weekly workout plan.",
+        schedule
+      };
+    }
+
+    document.querySelector("#saveCustomBtn").addEventListener("click", () => {
+      const custom = buildCustomProgramFromForm();
+
+      localStorage.setItem(STORAGE_KEYS.customProgram, JSON.stringify(custom));
+      localStorage.setItem(STORAGE_KEYS.activeProgram, "custom");
+      activeProgramKey = "custom";
+
+      document.querySelector("#customSavedNote").textContent =
+        "Saved successfully. This custom plan is now active on this browser/device.";
+
+      renderAll();
+      openTab("dashboard");
+    });
+
+    document.querySelector("#loadActiveIntoCustomBtn").addEventListener("click", () => {
+      const active = getActiveProgram();
+      document.querySelector("#customPlanName").value =
+        active.name === "My Current Schedule" ? "My Custom Schedule" : active.name + " Copy";
+
+      days.forEach(day => {
+        const item = active.schedule[day];
+        document.querySelector("#custom-" + day).value =
+          [item.title, stripHtml(item.details)].filter(Boolean).join("\n");
+      });
+
+      document.querySelector("#customSavedNote").textContent =
+        "Active program copied into the editor. Edit it, then press Save.";
+    });
+
+    document.querySelector("#resetCustomBtn").addEventListener("click", () => {
+      document.querySelector("#customPlanName").value = "";
+
+      days.forEach(day => {
+        document.querySelector("#custom-" + day).value = "";
+      });
+
+      localStorage.removeItem(STORAGE_KEYS.customProgram);
+
+      if (activeProgramKey === "custom") {
+        activeProgramKey = "original";
+        localStorage.setItem(STORAGE_KEYS.activeProgram, "original");
+      }
+
+      document.querySelector("#customSavedNote").textContent =
+        "Custom schedule cleared. Your original schedule is still available.";
+
+      renderAll();
+    });
+
+    // =========================
+    // DASHBOARD / SCHEDULE
+    // =========================
+
+    function getBahrainDay() {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Bahrain",
+        weekday: "long"
+      }).format(new Date());
+    }
+
+    function renderSchedule(schedule, today) {
+      const scheduleElement = document.querySelector("#schedule");
+      scheduleElement.innerHTML = "";
+
+      days.forEach(day => {
+        const item = schedule[day] || {
+          title: "Rest Day",
+          details: "No workout added"
+        };
+
+        const row = document.createElement("div");
+        row.className = "schedule-row" + (day === today ? " today" : "");
+        row.dataset.day = day;
+
+        row.innerHTML = `
+          <div class="day">
+            ${day}
+            ${day === today ? '<span class="badge">TODAY</span>' : ""}
+          </div>
+          <div class="exercise">
+            <strong>${item.title}</strong><br>
+            ${item.details}
+          </div>
+        `;
+
+        scheduleElement.appendChild(row);
+      });
+    }
+
+    function showTodayWorkout(day) {
+      const active = getActiveProgram();
+      const workout = active.schedule[day] || {
+        title: "Rest Day",
+        details: "No workout added"
+      };
+
+      document.querySelector("#todayWorkout").textContent = workout.title;
+      document.querySelector("#workoutDetails").innerHTML = workout.details;
+
+      renderSchedule(active.schedule, day);
+    }
+
+    function updateTime() {
+      const now = new Date();
+
+      const time = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Bahrain",
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: true
-      }
-    ).format(now);
+      }).format(now);
 
-
-    const date = new Intl.DateTimeFormat(
-      "en-US",
-      {
+      const date = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Bahrain",
         weekday: "long",
         day: "numeric",
         month: "long",
         year: "numeric"
+      }).format(now);
+
+      const day = getBahrainDay();
+
+      document.querySelector("#time").textContent = time;
+      document.querySelector("#date").textContent = date;
+
+      showTodayWorkout(day);
+    }
+
+    function renderAll() {
+      const active = getActiveProgram();
+
+      document.querySelector("#activePlanLabel").textContent = active.name;
+      document.querySelector("#selectedProgramText").textContent = active.name;
+      document.querySelector("#deviceIdLabel").textContent = getDeviceId();
+
+      renderProgramCards();
+      showTodayWorkout(getBahrainDay());
+    }
+
+    // =========================
+    // PRAYER TIMES
+    // =========================
+
+    async function getPrayerTimes() {
+      try {
+        const url =
+          "https://api.aladhan.com/v1/timingsByCity" +
+          "?city=Manama" +
+          "&country=Bahrain" +
+          "&method=0";
+
+        const response = await fetch(url);
+        const data = await response.json();
+        const timings = data.data.timings;
+
+        document.querySelector("#fajr").textContent = formatPrayerTime(timings.Fajr);
+        document.querySelector("#sunrise").textContent = formatPrayerTime(timings.Sunrise);
+        document.querySelector("#dhuhr").textContent = formatPrayerTime(timings.Dhuhr);
+        document.querySelector("#maghrib").textContent = formatPrayerTime(timings.Maghrib);
+        document.querySelector("#isha").textContent = formatPrayerTime(timings.Isha);
+      } catch (error) {
+        console.log("Prayer API Error:", error);
+
+        document.querySelector("#fajr").textContent = "Error";
+        document.querySelector("#sunrise").textContent = "Error";
+        document.querySelector("#dhuhr").textContent = "Error";
+        document.querySelector("#maghrib").textContent = "Error";
+        document.querySelector("#isha").textContent = "Error";
       }
-    ).format(now);
-
-
-    const day = new Intl.DateTimeFormat(
-      "en-US",
-      {
-        timeZone: "Asia/Bahrain",
-        weekday: "long"
-      }
-    ).format(now);
-
-
-    document.querySelector("#time").textContent = time;
-
-    document.querySelector("#date").textContent = date;
-
-
-    showTodayWorkout(day);
-
-  }
-
-
-
-  // =========================
-  // SHOW TODAY'S WORKOUT
-  // =========================
-
-  function showTodayWorkout(day) {
-
-    const workout = workouts[day];
-
-
-    document.querySelector("#todayWorkout").textContent =
-      workout.title;
-
-
-    document.querySelector("#workoutDetails").innerHTML =
-      workout.details;
-
-
-    const rows = document.querySelectorAll(".schedule-row");
-
-
-    rows.forEach(function(row) {
-
-      row.classList.remove("today");
-
-
-      const oldBadge = row.querySelector(".badge");
-
-      if (oldBadge) {
-        oldBadge.remove();
-      }
-
-
-      if (row.dataset.day === day) {
-
-        row.classList.add("today");
-
-
-        const badge = document.createElement("span");
-
-        badge.className = "badge";
-
-        badge.textContent = "TODAY";
-
-
-        row.querySelector(".day").appendChild(badge);
-
-      }
-
-    });
-
-  }
-
-
-
-  // =========================
-  // PRAYER TIMES
-  // =========================
-
-  async function getPrayerTimes() {
-
-    try {
-
-      /*
-        method = 0
-
-        Shia Ithna-Ashari
-        Leva Institute / Qum
-        Jafari calculation
-      */
-
-      const url =
-        "https://api.aladhan.com/v1/timingsByCity" +
-        "?city=Manama" +
-        "&country=Bahrain" +
-        "&method=0";
-
-
-      const response = await fetch(url);
-
-
-      const data = await response.json();
-
-
-      const timings = data.data.timings;
-
-
-      document.querySelector("#fajr").textContent =
-        formatPrayerTime(timings.Fajr);
-
-
-      document.querySelector("#sunrise").textContent =
-        formatPrayerTime(timings.Sunrise);
-
-
-      document.querySelector("#dhuhr").textContent =
-        formatPrayerTime(timings.Dhuhr);
-
-
-      document.querySelector("#maghrib").textContent =
-        formatPrayerTime(timings.Maghrib);
-
-
-      document.querySelector("#isha").textContent =
-        formatPrayerTime(timings.Isha);
-
     }
 
-    catch (error) {
+    function formatPrayerTime(time) {
+      const cleanTime = time.split(" ")[0];
+      const parts = cleanTime.split(":");
+      let hour = Number(parts[0]);
+      const minute = parts[1];
+      let period = "AM";
 
-      console.log("Prayer API Error:", error);
+      if (hour >= 12) period = "PM";
+      if (hour > 12) hour -= 12;
+      if (hour === 0) hour = 12;
 
-      document.querySelector("#fajr").textContent = "Error";
-      document.querySelector("#sunrise").textContent = "Error";
-      document.querySelector("#dhuhr").textContent = "Error";
-      document.querySelector("#maghrib").textContent = "Error";
-      document.querySelector("#isha").textContent = "Error";
-
+      return `${hour}:${minute} ${period}`;
     }
 
-  }
+    // =========================
+    // START
+    // =========================
 
+    renderCustomFields();
+    renderAll();
+    updateTime();
+    setInterval(updateTime, 1000);
+    getPrayerTimes();
 
-
-  // =========================
-  // CONVERT 24H TO 12H
-  // =========================
-
-  function formatPrayerTime(time) {
-
-    const cleanTime = time.split(" ")[0];
-
-
-    const parts = cleanTime.split(":");
-
-
-    let hour = Number(parts[0]);
-
-    const minute = parts[1];
-
-
-    let period = "AM";
-
-
-    if (hour >= 12) {
-      period = "PM";
+    const savedTab = localStorage.getItem(STORAGE_KEYS.activeTab);
+    if (savedTab && document.getElementById(savedTab)) {
+      openTab(savedTab);
     }
-
-
-    if (hour > 12) {
-      hour = hour - 12;
-    }
-
-
-    if (hour === 0) {
-      hour = 12;
-    }
-
-
-    return `${hour}:${minute} ${period}`;
-
-  }
-
-
-
-  // =========================
-  // START
-  // =========================
-
-  updateTime();
-
-  setInterval(updateTime, 1000);
-
-
-  getPrayerTimes();
-
-</script>
-
-
+  </script>
 </body>
 </html>
